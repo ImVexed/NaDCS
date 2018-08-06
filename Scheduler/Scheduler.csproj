@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="NotLiteCode">
+      <HintPath>..\..\NotLiteCode\NotLiteCode\bin\Debug\netcoreapp2.1\NotLiteCode.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

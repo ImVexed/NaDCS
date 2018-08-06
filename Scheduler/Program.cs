@@ -4,23 +4,19 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace NotLiteCode___Server
+namespace NaDCS.Scheduler
 {
   internal class Program
   {
     private static TaskQueue EventQueue = new TaskQueue();
+    public static Server<SharedClass> Server;
 
     private static void Main(string[] args)
     {
-      Console.Title = "NLC Server";
+      Console.Title = "NaDCS Scheduler";
 
-      var ServerSocket = new NLCSocket();
-
-      ServerSocket.CompressorOptions.DisableCompression = true;
-      ServerSocket.EncryptorOptions.DisableEncryption = true;
-
-      var Server = new Server<SharedClass>(ServerSocket);
-
+      Server = new Server<SharedClass>();
+      
       Server.OnServerClientConnected += (x, y) => Log($"Client {y.Client} connected!", ConsoleColor.Green);
       Server.OnServerClientDisconnected += (x, y) => Log($"Client {y.Client} disconnected!", ConsoleColor.Yellow);
       // Waiting for a Console.Write on every remote invoke can be quite taxing, so we use a simple Event Queue to make sure it doesn't lock the socket from doing other work
@@ -29,7 +25,7 @@ namespace NotLiteCode___Server
 
       Server.Start();
 
-      Log("Server Started!", ConsoleColor.Green);
+      Log("Scheduler Started!", ConsoleColor.Green);
 
       Process.GetCurrentProcess().WaitForExit();
     }
@@ -45,6 +41,32 @@ namespace NotLiteCode___Server
         Console.ForegroundColor = color;
         Console.Write("{0}{1}", message, Environment.NewLine);
         Console.ResetColor();
+      }
+    }
+  }
+
+  public class TaskQueue
+  {
+    private Task previous = Task.FromResult(false);
+    private object key = new object();
+
+    public Task<T> Enqueue<T>(Func<Task<T>> taskGenerator)
+    {
+      lock (key)
+      {
+        var next = previous.ContinueWith(t => taskGenerator()).Unwrap();
+        previous = next;
+        return next;
+      }
+    }
+
+    public Task Enqueue(Func<Task> taskGenerator)
+    {
+      lock (key)
+      {
+        var next = previous.ContinueWith(t => taskGenerator()).Unwrap();
+        previous = next;
+        return next;
       }
     }
   }

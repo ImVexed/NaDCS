@@ -1,51 +1,33 @@
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/ImVexed/notlitecode?branch=master)](https://ci.appveyor.com/project/ImVexed/notlitecode?branch=master)
-[![Code Factor](https://www.codefactor.io/repository/github/imvexed/notlitecode/badge)](https://www.codefactor.io/repository/github/imvexed/notlitecode)
-[![GitHub license](https://img.shields.io/github/license/ImVexed/NotLiteCode.svg)](https://github.com/ImVexed/NotLiteCode/blob/master/LICENSE)
+# NaDCS
+Not a Distributed Computing System, a rapidly deployable and highly scaleable distributed computing system for .Net Core code using Docker.
 
-# NotLiteCode
-A simple hackable remote code hosting platform.
+# Second Beta
+NaDCS has entered into it's second Beta, the project has been adapted to use the recently refactored NLC project and all of it's features.
 
-## What is?
-NLC (Not Lite Code) is a simplified version of LiteCode by *DragonHunter*, which allows clients to execute code on a server as if they were calling a function that was being run locally(effectively [RMI](https://en.wikipedia.org/wiki/Distributed_object_communication)(Remote Method Invokation as opposed to non-OOP [RPC](https://en.wikipedia.org/wiki/Remote_procedure_call)(Remote Procedure Call)).
-NLC intends to implement what was done in LiteCode but simplified and distilled down into 1 class (for the main logic atleast). 
+## Demo
+[![Demo](http://i.pi.gy/j3OPq.png)](https://www.youtube.com/watch?v=-SgpyHsZa1U)
+## Planned Features
+ - Prometheus metrics
+ - Unloading of assemblies (See https://github.com/dotnet/coreclr/pull/18476)
 
-## How does this differ from traditional RPC/RMI?
-Traditionally RPC/RMI implements a stub interface and is tightly coupled. NLC however can function without a stub interface, and is loosly coupled. NLC also implements end to end encryption (alongside an Eliptic Curve Diffie-Hellman Handshake), DEFLATE compression, client isolation, and a stupidly simple implementation.  Each client that connects to the NLC server also get's a unique instance of the SharedClass, making multi-client implementations a breeze.
+## So What Does It Do?
+NaDCS [nɑ dɪks] intends to be a highly scaleable and rapidly deployable distributed computing system.
+First I'd like to establish some terms you'll see in the code a lot. 
 
-## Sample Implementation
-### Server Code:
-SharedClass.cs
-```C#
-[NLCCall("Pinocchio")] // Our target function on the server
-public string CombineTwoStringsAndReturn(string s1, string s2)
-{
-  return "Magical server says, s1 + s2 = " + s1 + s2;
-}
-```
-Program.cs
-```C#
-var socket = new NLCSocket();
-var server = new Server<SharedClass>(socket);
-server.Start();
-```
-### Client Code:
-Program.cs
-```C#
-private static string CombineTwoStringsAndReturn(string s1, string s2) =>
-      Client.RemoteCall<string>("Pinocchio", s1, s2);
-      
-var Socket = new NLCSocket();
-Client = new Client(Socket);
-
-Client.Connect("localhost", 1337);
-
-Console.WriteLine(CombineTwoStringsAndReturn("I'm a ", "real boy!")); // Returns "Magical server says, s1 + s2 = I'm a real boy!"
-```
-## Sample Outputs
-<img src="http://image.prntscr.com/image/3dabba40de9643e18c2362a1e0e6f9d3.png" align="center" />
+ - Node: A singular end-point that works to compute the requests submitted
+ - Task: A singular request that will be distributed to a node to be computed
+ - Scheduler: The central host that orchestrates all the Nodes and ballances the Tasks between them.
+ - Client: The program or logic that submits Tasks to the Scheduler
  
-## Planned Features:
- - NuGet Package
- 
-## Original
-[LiteCode](https://gitlab.com/Dergan/LiteCode) by *DragonHunter* 
+The system intends to take on a star topology (atleast logically), and is simple in concept. A client, or any piece of arbitrary software
+is built but needs to execute a lot of complex code that takes too much time for it to complete on it's own, the solution is obvious but
+talk is easy. 
+
+This is where NaDCS comes in.
+
+NaDCS's Node and Scheduler system will never need to be modified by the average user or developer, both are pre-built containerized
+images ready to go with only a few command line arguments seperating you from a working cluster of computing nodes. The only work that needs to be done is in the taskable code. Any code to be distributed to the nodes needs to be transplanted into a library that 
+implements NLC functions similar to a SharedClass. And thats really it. After that it's a breeze to orchestrate tasks with the Scheduler from the Client 
+using the provided library, the taskable code will be sent to the Scheduler and will then be distributed to the Nodes and dynamically 
+loaded and prepared for Tasking. Each node will be notified and passed contextual parameters unique to that specific Task when the 
+Scheduler decides to task the node. You only have to write the code once.
