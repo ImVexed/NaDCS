@@ -15,8 +15,14 @@ namespace NaDCS.Worker
     {
       Console.Title = "NaDCS Worker";
 
+      if (!ushort.TryParse(Environment.GetEnvironmentVariable("SCHEDULER_PORT"), out var port))
+      {
+        Console.WriteLine($"[!] CRITICAL ERROR: Expected SCHEDULER_PORT to be a valid port number between 0 - 65535 while the argument was {Environment.GetEnvironmentVariable("SCHEDULER_PORT") ?? "NULL"}");
+        return;
+      }
+
       var Client = new Client();
-      if(!Client.Connect("localhost", 1337).Result)
+      if(!Client.Connect(Environment.GetEnvironmentVariable("SCHEDULER_IP"), port).Result)
       {
         Console.WriteLine("Failed to connect to scheduler!");
         return;
