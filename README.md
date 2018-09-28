@@ -8,7 +8,7 @@ NaDCS has entered into it's second Beta, the project has been adapted to use the
 [![Demo](http://i.pi.gy/j3OPq.png)](https://www.youtube.com/watch?v=-SgpyHsZa1U)
 ## Planned Features
  - Prometheus metrics
- - Unloading of assemblies (See https://github.com/dotnet/coreclr/pull/18476)
+ - Unloading of assemblies (See https://github.com/dotnet/coreclr/projects/9#card-13372338)
 
 ## So What Does It Do?
 NaDCS [nɑ dɪks] intends to be a highly scaleable and rapidly deployable distributed computing system.
