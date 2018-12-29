@@ -5,9 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="NotLiteCode">
-      <HintPath>..\..\NotLiteCode\NotLiteCode\bin\Debug\netcoreapp2.1\NotLiteCode.dll</HintPath>
-    </Reference>
+    <PackageReference Include="NotLiteCode" Version="1.1.1" />
   </ItemGroup>
 
 </Project>
