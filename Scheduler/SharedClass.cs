@@ -32,7 +32,7 @@ namespace NaDCS.Scheduler
         return false;
 
       foreach (var worker in Workers.Values)
-        if (!worker.Client.RemoteCall<bool>("LoadPayload", PayloadID, Payload).Result)
+        if (!worker.Client.RemoteCall<bool>("LoadPayload", PayloadID, Payload))
           return false;
 
       return true;
@@ -61,7 +61,7 @@ namespace NaDCS.Scheduler
 
         Workers[LeastBusyWorker].Tasks++;
       }
-      var Result = Workers[LeastBusyWorker].Client.RemoteCall<object>("ExecuteTask", PayloadID, Identifier, Parameters).Result;
+      var Result = Workers[LeastBusyWorker].Client.RemoteCall<object>("ExecuteTask", PayloadID, Identifier, Parameters);
 
       lock (TaskingLock)
         Workers[LeastBusyWorker].Tasks--;
@@ -79,7 +79,7 @@ namespace NaDCS.Scheduler
 
         Workers[LeastBusyWorker].Tasks++;
       }
-      var Result = Workers[LeastBusyWorker].Client.RemoteCall<object>("ExecuteTaskVoid", PayloadID, Identifier).Result;
+      var Result = Workers[LeastBusyWorker].Client.RemoteCall<object>("ExecuteTaskVoid", PayloadID, Identifier);
 
       lock (TaskingLock)
         Workers[LeastBusyWorker].Tasks--;

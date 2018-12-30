@@ -3,12 +3,9 @@ services:
   scheduler:
     image: imvexxed/nadcs:scheduler
     build: Scheduler/
-    #ports:
-    #  - 1337:1337
-    networks:
-      nadcs:
-        aliases:
-          - scheduler
+    ports:
+      - 1337:1337
+
   worker:
     image: imvexxed/nadcs:worker
     build: Worker/
@@ -19,10 +16,5 @@ services:
     environment:
       - SCHEDULER_IP=scheduler
       - SCHEDULER_PORT=1337
-    networks:
-      - nadcs
-networks:
-  nadcs:
-    driver: bridge
 
   

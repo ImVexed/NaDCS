@@ -22,13 +22,13 @@ namespace NaDCS.Worker
       }
 
       var Client = new Client();
-      if(!Client.Connect(Environment.GetEnvironmentVariable("SCHEDULER_IP"), port).Result)
+      if(!Client.Connect(Environment.GetEnvironmentVariable("SCHEDULER_IP"), port))
       {
         Console.WriteLine("Failed to connect to scheduler!");
         return;
       }
 
-      if(!Client.RemoteCall<bool>("RegisterAsWorker").Result)
+      if(!Client.RemoteCall<bool>("RegisterAsWorker"))
       {
         Console.WriteLine("Failed to register as worker!");
         return;

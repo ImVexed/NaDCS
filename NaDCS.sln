@@ -1,17 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2026
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28407.52
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Worker", "Worker\Worker.csproj", "{B1FE491B-51E1-4907-9BC5-5854616F67AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Worker", "Worker\Worker.csproj", "{B1FE491B-51E1-4907-9BC5-5854616F67AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduler", "Scheduler\Scheduler.csproj", "{0A51B7DD-FCEE-444E-9DA8-ED8890060E99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scheduler", "Scheduler\Scheduler.csproj", "{0A51B7DD-FCEE-444E-9DA8-ED8890060E99}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NaDCS", "NaDCS\NaDCS.csproj", "{A280B819-A44E-4B6D-A7B9-4EA458403B56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NaDCS", "NaDCS\NaDCS.csproj", "{A280B819-A44E-4B6D-A7B9-4EA458403B56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{2FC61268-72C0-4F62-B4E1-AF84501F0BE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Example\Client\Client.csproj", "{B55F790C-1827-4433-BB56-FC49150D8D85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkToDo", "WorkToDo\WorkToDo.csproj", "{911A7453-37ED-4A07-800F-DBA12E900561}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{8F361D6B-9B79-4677-BD82-0BEE26B5CEE4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkToDo", "Example\WorkToDo\WorkToDo.csproj", "{C7BA2FE9-D078-46DA-8080-37FF9BC5F16B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,17 +33,21 @@ Global
 		{A280B819-A44E-4B6D-A7B9-4EA458403B56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A280B819-A44E-4B6D-A7B9-4EA458403B56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A280B819-A44E-4B6D-A7B9-4EA458403B56}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2FC61268-72C0-4F62-B4E1-AF84501F0BE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2FC61268-72C0-4F62-B4E1-AF84501F0BE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2FC61268-72C0-4F62-B4E1-AF84501F0BE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2FC61268-72C0-4F62-B4E1-AF84501F0BE1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{911A7453-37ED-4A07-800F-DBA12E900561}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{911A7453-37ED-4A07-800F-DBA12E900561}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{911A7453-37ED-4A07-800F-DBA12E900561}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{911A7453-37ED-4A07-800F-DBA12E900561}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B55F790C-1827-4433-BB56-FC49150D8D85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B55F790C-1827-4433-BB56-FC49150D8D85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B55F790C-1827-4433-BB56-FC49150D8D85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B55F790C-1827-4433-BB56-FC49150D8D85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7BA2FE9-D078-46DA-8080-37FF9BC5F16B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7BA2FE9-D078-46DA-8080-37FF9BC5F16B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7BA2FE9-D078-46DA-8080-37FF9BC5F16B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7BA2FE9-D078-46DA-8080-37FF9BC5F16B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B55F790C-1827-4433-BB56-FC49150D8D85} = {8F361D6B-9B79-4677-BD82-0BEE26B5CEE4}
+		{C7BA2FE9-D078-46DA-8080-37FF9BC5F16B} = {8F361D6B-9B79-4677-BD82-0BEE26B5CEE4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {903A5622-E077-422F-9D60-C9B3483DA87D}
