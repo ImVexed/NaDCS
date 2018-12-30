@@ -1,14 +1,20 @@
 # NaDCS
 Not a Distributed Computing System, a rapidly deployable and highly scaleable distributed computing system for .Net Core code using Docker.
 
-# Second Beta
-NaDCS has entered into it's second Beta, the project has been adapted to use the recently refactored NLC project and all of it's features.
-
+## Try
+To get a feel for the project, you can spin it up right out of the box by deploying it to a local docker swarm and running the client example.
+```bash
+docker-compose build
+docker swarm init
+docker stack deploy -c docker-compose.yml nadcs
+```
+Build both Client & WorkToDo in the example folder. Then copy WorkToDo.dll into the same directory as Client.dll and start the Client project.
 ## Demo
-[![Demo](http://i.pi.gy/j3OPq.png)](https://www.youtube.com/watch?v=-SgpyHsZa1U)
+https://www.youtube.com/watch?v=-SgpyHsZa1U
 ## Planned Features
  - Prometheus metrics
  - Unloading of assemblies (See https://github.com/dotnet/coreclr/projects/9#card-13372338)
+ - Cleanup of how Taskable code is invoked.
 
 ## So What Does It Do?
 NaDCS [nɑ dɪks] intends to be a highly scaleable and rapidly deployable distributed computing system.
