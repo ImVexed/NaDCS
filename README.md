@@ -1,5 +1,5 @@
 # NaDCS
-Not a Distributed Computing System, a rapidly deployable and highly scaleable distributed computing system for .Net Core code using Docker.
+Not a Distributed Computing System, a rapidly deployable and highly scaleable distributed computing system for .Net Core that supports runtime dynamic code loading & unloading code using Docker.
 
 ## Try
 To get a feel for the project, you can spin it up right out of the box by deploying it to a local docker swarm and running the client example.
