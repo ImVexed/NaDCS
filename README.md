@@ -4,7 +4,7 @@ Not a Distributed Computing System, a rapidly deployable and highly scaleable di
 ## Try
 To get a feel for the project, you can spin it up right out of the box by deploying it to a local docker swarm and running the client example.
 ```bash
-docker-compose build
+docker-compose build --parallel
 docker swarm init
 docker stack deploy -c docker-compose.yml nadcs
 ```
