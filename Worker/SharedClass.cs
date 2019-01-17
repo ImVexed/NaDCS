@@ -2,80 +2,78 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Reflection;
-using System.Text;
 
 namespace NaDCS.Worker
 {
-  public struct Payload
-  {
-    public object Instance;
-    public Dictionary<string, MethodInfo> Methods;
-  }
-  public class SharedClass : IDisposable
-  {
-    public static Dictionary<string, Payload> Payloads = new Dictionary<string, Payload>();
-
-    [NLCCall("ExecuteTask")]
-    public static object ExecuteTask(string PayloadID, string Identifier, object[] Parameters)
+    public struct Payload
     {
-      if (!Payloads.TryGetValue(PayloadID, out var TargetPayload))
-        throw new Exception($"Payload {PayloadID} does not exist");
-
-      if (!TargetPayload.Methods.TryGetValue(Identifier, out var TargetMethod))
-        throw new Exception($"Payload does not container method {Identifier}");
-
-      return TargetMethod.Invoke(TargetPayload.Instance, Parameters);
+        public object Instance;
+        public Dictionary<string, MethodInfo> Methods;
     }
 
-    [NLCCall("ExecuteTaskVoid")]
-    public static object ExecuteTaskVoid(string PayloadID, string Identifier)
+    public class SharedClass : IDisposable
     {
-      if (!Payloads.TryGetValue(PayloadID, out var TargetPayload))
-        throw new Exception($"Payload {PayloadID} does not exist");
+        public static Dictionary<string, Payload> Payloads = new Dictionary<string, Payload>();
 
-      if (!TargetPayload.Methods.TryGetValue(Identifier, out var TargetMethod))
-        throw new Exception($"Payload does not container method {Identifier}");
-
-      return TargetMethod.Invoke(TargetPayload.Instance, null);
-    }
-
-    [NLCCall("LoadPayload")]
-    public static bool LoadPayload(string PayloadID, byte[] Payload)
-    {
-      if (Payloads.ContainsKey(PayloadID))
-        return false;
-
-      var TargetAssembly = Assembly.Load(Payload);
-      
-      var SharedClass = TargetAssembly.GetTypes().First(x => x.GetMethods().Any(y => y.GetCustomAttributes(typeof(NLCCall), false).Length > 0));
-      var SharedInstance = Activator.CreateInstance(SharedClass);
-      var SharedMethods = new Dictionary<string, MethodInfo>();
-
-      foreach (MethodInfo SharedMethod in SharedClass.GetMethods())
-      {
-        var SharedMethodAttribute = SharedMethod.GetCustomAttributes(typeof(NLCCall), false);
-
-        if (SharedMethodAttribute.Length > 0)
+        [NLCCall("ExecuteTask")]
+        public static object ExecuteTask(string PayloadID, string Identifier, object[] Parameters)
         {
-          var thisAttr = SharedMethodAttribute[0] as NLCCall;
+            if (!Payloads.TryGetValue(PayloadID, out var TargetPayload))
+                throw new Exception($"Payload {PayloadID} does not exist");
 
-          if (SharedMethods.ContainsKey(thisAttr.Identifier))
-            continue;
+            if (!TargetPayload.Methods.TryGetValue(Identifier, out var TargetMethod))
+                throw new Exception($"Payload does not container method {Identifier}");
 
-
-          SharedMethods.Add(thisAttr.Identifier, SharedMethod);
+            return TargetMethod.Invoke(TargetPayload.Instance, Parameters);
         }
-      }
 
-      Payloads.Add(PayloadID, new Payload() { Instance = SharedInstance, Methods = SharedMethods });
+        [NLCCall("ExecuteTaskVoid")]
+        public static object ExecuteTaskVoid(string PayloadID, string Identifier)
+        {
+            if (!Payloads.TryGetValue(PayloadID, out var TargetPayload))
+                throw new Exception($"Payload {PayloadID} does not exist");
 
-      return true;
+            if (!TargetPayload.Methods.TryGetValue(Identifier, out var TargetMethod))
+                throw new Exception($"Payload does not container method {Identifier}");
+
+            return TargetMethod.Invoke(TargetPayload.Instance, null);
+        }
+
+        [NLCCall("LoadPayload")]
+        public static bool LoadPayload(string PayloadID, byte[] Payload)
+        {
+            if (Payloads.ContainsKey(PayloadID))
+                return false;
+
+            var TargetAssembly = Assembly.Load(Payload);
+
+            var SharedClass = TargetAssembly.GetTypes().First(x => x.GetMethods().Any(y => y.GetCustomAttributes(typeof(NLCCall), false).Length > 0));
+            var SharedInstance = Activator.CreateInstance(SharedClass);
+            var SharedMethods = new Dictionary<string, MethodInfo>();
+
+            foreach (MethodInfo SharedMethod in SharedClass.GetMethods())
+            {
+                var SharedMethodAttribute = SharedMethod.GetCustomAttributes(typeof(NLCCall), false);
+
+                if (SharedMethodAttribute.Length > 0)
+                {
+                    var thisAttr = SharedMethodAttribute[0] as NLCCall;
+
+                    if (SharedMethods.ContainsKey(thisAttr.Identifier))
+                        continue;
+
+                    SharedMethods.Add(thisAttr.Identifier, SharedMethod);
+                }
+            }
+
+            Payloads.Add(PayloadID, new Payload() { Instance = SharedInstance, Methods = SharedMethods });
+
+            return true;
+        }
+
+        public void Dispose()
+        {
+        }
     }
-
-    public void Dispose()
-    {
-    }
-  }
 }

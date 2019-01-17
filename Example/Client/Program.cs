@@ -5,28 +5,28 @@ using System.Threading.Tasks;
 
 namespace SampleClient
 {
-  internal class Program
-  {
-    private static string JustATest() =>
-      client.ExecuteTask<string>("work", "JustATest");
-
-    private static Client client;
-
-    private static void Main(string[] args)
+    internal class Program
     {
-      client = new Client("localhost", 1337);
+        private static async Task<string> JustATest() =>
+          await client.ExecuteTask<string>("work", "JustATest");
 
-      Console.WriteLine("Client connected");
+        private static Client client;
 
-      if (client.PropagatePayload("work", File.ReadAllBytes("WorkToDo.dll")))
-      {
-        Console.WriteLine("Payload propagated");
+        private static void Main(string[] args)
+        {
+            client = new Client("localhost", 1337);
 
-        for (var i = 0; i < 10; i++)      
-          Task.Run(() => Console.WriteLine(JustATest()));     
-      }
-      Console.WriteLine("Done");
-      Console.ReadKey(true);
+            Console.WriteLine("Client connected");
+
+            if (client.PropagatePayload("work", File.ReadAllBytes("WorkToDo.dll")).Result)
+            {
+                Console.WriteLine("Payload propagated");
+
+                for (var i = 0; i < 10; i++)
+                    Task.Run(async () => Console.WriteLine(await JustATest()));
+            }
+            Console.WriteLine("Done");
+            Console.ReadKey(true);
+        }
     }
-  }
 }
